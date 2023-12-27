@@ -3,6 +3,7 @@ package metrics
 import (
 	"context"
 	"crypto/tls"
+	"crypto/x509"
 	"time"
 
 	influxdb "github.com/influxdata/influxdb-client-go/v2"
@@ -17,7 +18,15 @@ var invokeTime time.Time
 
 func initInflux() {
 	influxClient = influxdb.NewClient(viper.GetString("influx.url"), viper.GetString("influx.token"))
-	influxdb.DefaultOptions().AddDefaultTag("application", "birdweather_digest").SetTLSConfig(&tls.Config{InsecureSkipVerify: true})
+	rootCas, err := x509.SystemCertPool()
+	if err != nil {
+		panic(err)
+	}
+	config := &tls.Config{
+		RootCAs:            rootCas,
+		InsecureSkipVerify: true,
+	}
+	influxdb.DefaultOptions().AddDefaultTag("application", "birdweather_digest").SetTLSConfig(config)
 	writeAPI = influxClient.WriteAPIBlocking(viper.GetString("influx.org"), viper.GetString("influx.bucket"))
 	produceMetrics = true
 }
