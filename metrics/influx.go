@@ -47,8 +47,6 @@ func recordInfluxFetch(station string, speciesCount int) {
 
 func recordInfluxInvoked() {
 	invokeTime = time.Now()
-	p := influxdb.NewPointWithMeasurement("invoke").SetTime(time.Now())
-	writePoint(p)
 }
 
 func recordInfluxEmail(recipientCount int, bodyLength int) {
