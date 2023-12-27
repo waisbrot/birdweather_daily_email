@@ -19,14 +19,10 @@ jobs:
       run: go build -v ./...
     - name: Test
       run: go test -v ./...
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Release
-        uses: fnkr/github-action-ghr@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GHR_COMPRESS: gz
-          GHR_PATH: birdweather_daily_email
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_COMPRESS: gz
+        GHR_PATH: birdweather_daily_email
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
