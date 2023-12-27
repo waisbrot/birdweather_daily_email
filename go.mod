@@ -1,6 +1,6 @@
 module github.com/waisbrot/birdweather_daily_email
 
-go 1.21.5
+go 1.21
 
 require (
 	github.com/Khan/genqlient v0.6.0 // indirect
