@@ -9,6 +9,7 @@ email:
     port: 123
     user: baz@example.com
     pass: setecastronomy
+  template: /path/to/template
 stations:
   - 123
   - 456

@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"html/template"
 	"io"
-	"os"
-	"path"
 	"time"
 
+	"github.com/spf13/viper"
 	"github.com/waisbrot/birdweather_daily_email/birdweather"
 )
 
@@ -23,12 +22,7 @@ type StationTemplate struct {
 }
 
 func readTemplate() *template.Template {
-	exePath, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	execDir := path.Dir(exePath)
-	templateFile := path.Join(execDir, "countEmail.tmpl")
+	templateFile := viper.GetString("email.template")
 	template, err := template.New("countEmail.tmpl").ParseFiles(templateFile)
 	if err != nil {
 		panic(err)
