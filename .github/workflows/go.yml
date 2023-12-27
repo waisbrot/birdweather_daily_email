@@ -25,5 +25,5 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       env:
         GHR_COMPRESS: gz
-        GHR_PATH: birdweather_daily_email
+        GHR_PATH: github.com/waisbrot/birdweather_daily_email
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
