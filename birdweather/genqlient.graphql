@@ -1,0 +1,19 @@
+query dailyCounts($stationId: ID!) {
+  station(id: $stationId) {
+    name
+    topSpecies(limit: 50) {
+      breakdown {
+        almostCertain
+        uncertain
+        unlikely
+        veryLikely
+      }
+      species {
+        commonName
+        scientificName
+        imageCredit
+        imageUrl
+      }
+    }
+  }
+}

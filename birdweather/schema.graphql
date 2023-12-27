@@ -1,0 +1,1589 @@
+"""
+Requires that exactly one field must be supplied and that field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+type AccelReading {
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+  x: Float
+  y: Float
+  z: Float
+}
+
+"""The connection type for AccelReading."""
+type AccelReadingConnection {
+  """A list of edges."""
+  edges: [AccelReadingEdge]
+
+  """A list of nodes."""
+  nodes: [AccelReading]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type AccelReadingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: AccelReading
+}
+
+"""Air pollution reading provided by OpenWeather"""
+type AirPollutionReading {
+  """
+  Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
+  """
+  aqi: Int!
+
+  """Сoncentration of CO (Carbon monoxide), μg/m3"""
+  co: Float!
+
+  """Geographic coordinates of the reading"""
+  coords: Coordinates!
+
+  """Сoncentration of NH3 (Ammonia), μg/m3"""
+  nh3: Float!
+
+  """Сoncentration of NO (Nitrogen monoxide), μg/m3"""
+  no: Float!
+
+  """Сoncentration of NO2 (Nitrogen dioxide), μg/m3"""
+  no2: Float!
+
+  """Сoncentration of O3 (Ozone), μg/m3"""
+  o3: Float!
+
+  """Сoncentration of PM10 (Coarse particulate matter), μg/m3"""
+  pm10: Float!
+
+  """Сoncentration of PM2.5 (Fine particles matter), μg/m3"""
+  pm2_5: Float!
+
+  """Сoncentration of SO2 (Sulphur dioxide), μg/m3"""
+  so2: Float!
+
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+}
+
+"""
+Represents non-fractional signed whole numeric values. Since the value may exceed the size of a 32-bit integer, it's encoded as a string.
+"""
+scalar BigInt
+
+type BinnedSpeciesCount {
+  bins: [SpeciesCountBin!]!
+  count: Int!
+}
+
+type BinnedSpeciesSummaryCount {
+  counts: [SummarySpeciesCount!]!
+  date: ISO8601Date!
+  dayOfYear: Int!
+  total: Int!
+}
+
+type Coordinates {
+  """Latitude"""
+  lat: Float!
+
+  """Longitude"""
+  lon: Float!
+}
+
+type Count {
+  count: Int!
+  type: String!
+}
+
+type Counts {
+  birdnet: Int
+  breakdown: CountsBreakdown!
+  detections: Int!
+  species: Int!
+  stations: Int!
+}
+
+type CountsBreakdown {
+  stations: [Count!]!
+}
+
+"""An audio detection of a species by a BirdWeather station."""
+type Detection implements Record {
+  """Calculated certainty"""
+  certainty: String!
+
+  """Reported confidence"""
+  confidence: Float!
+
+  """Geographic coordinates of the detection"""
+  coords: Coordinates!
+
+  """URL for favoriting detections"""
+  favoriteUrl: String!
+
+  """URL for flagging detections"""
+  flagUrl: String!
+
+  """The unique identifier for the resource"""
+  id: ID!
+
+  """Reported probability"""
+  probability: Float
+
+  """Calculated score"""
+  score: Float!
+
+  """Associated soundscape (optional)"""
+  soundscape: Soundscape
+
+  """Detection species"""
+  species: Species!
+
+  """Species ID"""
+  speciesId: ID!
+
+  """Station that recorded this detection"""
+  station: Station
+
+  """Detection timestamp (in station time zone)"""
+  timestamp: ISO8601DateTime
+
+  """URL for up/downvote detections"""
+  voteUrl: String!
+}
+
+"""The connection type for Detection."""
+type DetectionConnection {
+  """A list of edges."""
+  edges: [DetectionEdge]
+
+  """A list of nodes."""
+  nodes: [Detection]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type DetectionEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Detection
+}
+
+type EnvironmentReading {
+  aqi: Float
+  barometricPressure: Float
+  eco2: Float
+  humidity: Float
+  soundPressureLevel: Float
+  temperature: Float
+
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+  voc: Float
+}
+
+"""The connection type for EnvironmentReading."""
+type EnvironmentReadingConnection {
+  """A list of edges."""
+  edges: [EnvironmentReadingEdge]
+
+  """A list of nodes."""
+  nodes: [EnvironmentReading]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type EnvironmentReadingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: EnvironmentReading
+}
+
+"""An ISO 8601-encoded date"""
+scalar ISO8601Date
+
+"""An ISO 8601-encoded datetime"""
+scalar ISO8601DateTime
+
+"""A time period (e.g. last 24 hours) or explicit date duration."""
+input InputDuration {
+  """Number of units of time"""
+  count: Int
+
+  """Unit of time (hour/day/week/month/year)"""
+  unit: String
+
+  """From date"""
+  from: ISO8601Date
+
+  """To date"""
+  to: ISO8601Date
+}
+
+"""A geographic location (latitude / longitude pair)."""
+input InputLocation {
+  """Latitude"""
+  lat: Float!
+
+  """Longitude"""
+  lon: Float!
+}
+
+"""Represents untyped JSON"""
+scalar JSON
+
+type LightReading {
+  clear: Int
+  f1: Int
+  f2: Int
+  f3: Int
+  f4: Int
+  f5: Int
+  f6: Int
+  f7: Int
+  f8: Int
+  nir: Int
+
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+}
+
+"""The connection type for LightReading."""
+type LightReadingConnection {
+  """A list of edges."""
+  edges: [LightReadingEdge]
+
+  """A list of nodes."""
+  nodes: [LightReading]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type LightReadingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: LightReading
+}
+
+type LocationReading {
+  altitude: Float
+  lat: Float
+  lon: Float
+  satellites: Int
+
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+}
+
+"""The connection type for LocationReading."""
+type LocationReadingConnection {
+  """A list of edges."""
+  edges: [LocationReadingEdge]
+
+  """A list of nodes."""
+  nodes: [LocationReading]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type LocationReadingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: LocationReading
+}
+
+type MagReading {
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+  x: Float
+  y: Float
+  z: Float
+}
+
+"""The connection type for MagReading."""
+type MagReadingConnection {
+  """A list of edges."""
+  edges: [MagReadingEdge]
+
+  """A list of nodes."""
+  nodes: [MagReading]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type MagReadingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: MagReading
+}
+
+"""Autogenerated return type of NewDetection."""
+type NewDetectionPayload {
+  detection: Detection!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+type Query {
+  """Lookup multiple species by IDs"""
+  allSpecies(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Array of species IDs"""
+    ids: [ID!]!
+  ): SpeciesConnection
+  birdnetSightings(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Maximum number of results to return"""
+    limit: Int
+
+    """Initial offset of first result"""
+    offset: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): SightingConnection!
+  counts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): Counts!
+  dailyDetectionCounts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Array of species IDs to filter on (optional)"""
+    speciesIds: [ID!]
+
+    """Array of station IDs to filter on (optional)"""
+    stationIds: [ID!]
+  ): [BinnedSpeciesSummaryCount!]!
+  detectionCounts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): [BinnedSpeciesCount!]!
+
+  """List all detections"""
+  detections(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Array of species IDs to filter on (optional)"""
+    speciesIds: [ID!]
+
+    """Array of station IDs to filter on (optional)"""
+    stationIds: [ID!]
+
+    """Array of station types to filter on (optional)"""
+    stationTypes: [String!]
+
+    """Array of continents to filter on (optional)"""
+    continents: [String!]
+
+    """Array of countries to filter on (optional)"""
+    countries: [String!]
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+
+    """Filter detections with up- or down-votes (1 or -1)"""
+    vote: Int
+    sortBy: String
+
+    """Only return one latest detection per station"""
+    uniqueStations: Boolean
+
+    """Only return detections with a valid soundscape"""
+    validSoundscape: Boolean
+  ): DetectionConnection!
+  ebirdSightings(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (required)"""
+    speciesId: ID!
+
+    """Center coordinates for search"""
+    center: InputLocation!
+  ): [Sighting!]!
+
+  """Search for species by common or scientific name"""
+  searchSpecies(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Search query string"""
+    query: String
+  ): SpeciesConnection
+
+  """Fetch species by ID or exact scientific name"""
+  species(
+    """Species ID"""
+    id: ID
+
+    """Species scientific name"""
+    scientificName: String
+  ): Species
+  station(
+    """Station ID"""
+    id: ID!
+  ): Station!
+
+  """List all public stations."""
+  stations(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Optional search query"""
+    query: String
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): StationConnection!
+  timeOfDayDetectionCounts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): [BinnedSpeciesCount!]!
+  topBirdnetSpecies(
+    """Maximum number of results to return"""
+    limit: Int
+
+    """Initial offset of first result"""
+    offset: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): [SpeciesCount!]!
+  topSpecies(
+    """Maximum number of results to return"""
+    limit: Int
+
+    """Initial offset of first result"""
+    offset: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Array of station types to filter on (optional)"""
+    stationTypes: [String!]
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): [SpeciesCount!]!
+}
+
+interface Record {
+  """The unique identifier for the resource"""
+  id: ID!
+}
+
+"""Container type for PUC sensor readings"""
+type Sensors {
+  """Latest accelerometer sensor data reading"""
+  accel: AccelReading
+
+  """Accelerometer sensor data reading history"""
+  accelHistory(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): AccelReadingConnection!
+
+  """Latest environmental sensor data reading"""
+  environment: EnvironmentReading
+
+  """Environmental sensor data reading history"""
+  environmentHistory(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): EnvironmentReadingConnection!
+
+  """Latest light sensor data reading"""
+  light: LightReading
+
+  """Light sensor data reading history"""
+  lightHistory(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): LightReadingConnection!
+
+  """Latest location sensor data reading"""
+  location: LocationReading
+
+  """Location sensor data reading history"""
+  locationHistory(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): LocationReadingConnection!
+
+  """Latest magnetometer sensor data reading"""
+  mag: MagReading
+
+  """Magnetometer sensor data reading history"""
+  magHistory(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): MagReadingConnection!
+
+  """Latest system info reading"""
+  system: SystemReading
+
+  """System info reading history"""
+  systemHistory(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): SystemReadingConnection!
+}
+
+"""A BirdNET or eBird sighting."""
+type Sighting implements Record {
+  coords: Coordinates!
+
+  """The unique identifier for the resource"""
+  id: ID!
+  score: Float!
+  species: Species!
+  speciesId: ID!
+  timestamp: ISO8601DateTime
+}
+
+"""The connection type for Sighting."""
+type SightingConnection {
+  """A list of edges."""
+  edges: [SightingEdge]
+
+  """A list of nodes."""
+  nodes: [Sighting]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type SightingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Sighting
+}
+
+"""A soundscape file uploaded by a BirdWeather station."""
+type Soundscape implements Record {
+  """Duration (in seconds) of the audio file"""
+  duration: Int!
+
+  """End time (in seconds) of the detection"""
+  endTime: Float!
+
+  """Size (in bytes) of the audio file"""
+  filesize: Int!
+
+  """The unique identifier for the resource"""
+  id: ID!
+
+  """Starting time (in seconds) of the detection"""
+  startTime: Float!
+
+  """Station that recorded this soundscape"""
+  station: Station
+
+  """Timestamp of the soundscape"""
+  timestamp: ISO8601DateTime!
+
+  """URL for the audio file"""
+  url: String!
+}
+
+type Species implements Record {
+  """4-letter alpha code"""
+  alpha: String
+
+  """6-letter alpha code"""
+  alpha6: String
+
+  """URL to BirdWeather species page"""
+  birdweatherUrl: String
+
+  """Assigned color"""
+  color: String!
+
+  """Common name"""
+  commonName: String!
+  detectionCounts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Timestamp grouping (in minutes)"""
+    group: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): BinnedSpeciesCount!
+
+  """eBird alpha code"""
+  ebirdCode: String
+
+  """URL to eBird page"""
+  ebirdUrl: String
+
+  """The unique identifier for the resource"""
+  id: ID!
+
+  """Credited author of image"""
+  imageCredit: String
+
+  """Name of image license"""
+  imageLicense: String
+
+  """URL to image license page"""
+  imageLicenseUrl: String
+
+  """400x400 image URL"""
+  imageUrl: String
+
+  """URL to Macaulay Library page"""
+  mlUrl: String
+  predictionArea: JSON
+  range: JSON
+
+  """Scientific name"""
+  scientificName: String
+
+  """List stations with species detection"""
+  stations(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+
+    """Array of station types to filter on (optional)"""
+    stationTypes: [String!]
+  ): [StationCount!]!
+
+  """100x100 thumbnail image URL"""
+  thumbnailUrl: String
+
+  """List top detection for each station the species was detected at"""
+  topDetections(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """Time period for query (defaults to all time)"""
+    period: InputDuration
+  ): DetectionConnection!
+
+  """Wikipedia extract"""
+  wikipediaSummary: String
+
+  """URL to Wikipedia page"""
+  wikipediaUrl: String
+}
+
+"""The connection type for Species."""
+type SpeciesConnection {
+  """A list of edges."""
+  edges: [SpeciesEdge]
+
+  """A list of nodes."""
+  nodes: [Species]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SpeciesCount {
+  averageProbability: Float
+  breakdown: SpeciesCountBreakdown
+  count: Int!
+  species: Species
+  speciesId: ID!
+}
+
+type SpeciesCountBin {
+  count: Int!
+  key: SpeciesCountKey!
+}
+
+type SpeciesCountBreakdown {
+  """Count of almost certain detections"""
+  almostCertain: Int!
+
+  """Count of uncertain detections"""
+  uncertain: Int!
+
+  """Count of unlikely detections"""
+  unlikely: Int!
+
+  """Count of very likely detections"""
+  veryLikely: Int!
+}
+
+"""A float representing an hour of the day or an ISO8601 timestamp"""
+scalar SpeciesCountKey
+
+"""An edge in a connection."""
+type SpeciesEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Species
+}
+
+"""A BirdWeather station (either real or virtual)."""
+type Station implements Record {
+  """Air pollution data from OpenWeather"""
+  airPollution: AirPollutionReading
+
+  """Station audio feed URL"""
+  audioUrl: String
+
+  """Continent"""
+  continent: String
+
+  """Location coordinates"""
+  coords: Coordinates
+
+  """Country name"""
+  country: String
+  counts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+  ): StationCounts!
+  detectionCounts(
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+
+    """North-east bounding box coordinates"""
+    ne: InputLocation
+
+    """South-west bounding box coordinates"""
+    sw: InputLocation
+  ): [BinnedSpeciesCount!]!
+  detections(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+  ): DetectionConnection!
+
+  """The unique identifier for the resource"""
+  id: ID!
+
+  """Timestamp of latest detection"""
+  latestDetectionAt: ISO8601DateTime
+
+  """Human-readable location"""
+  location: String
+
+  """Location privacy enabled"""
+  locationPrivacy: Boolean!
+
+  """Station name"""
+  name: String!
+
+  """Station notes (optional)"""
+  notes: String
+  sensors: Sensors
+  source: String @deprecated(reason: "Stream source URL (use audioUrl/videoUrl instead)")
+
+  """State/province/region"""
+  state: String
+
+  """Timezone string"""
+  timezone: String!
+  topSpecies(
+    """Maximum number of results to return"""
+    limit: Int
+
+    """Time period for query (defaults to last 24 hours)"""
+    period: InputDuration
+
+    """Species ID (optional)"""
+    speciesId: ID
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+  ): [SpeciesCount!]!
+
+  """Station type (birdnetpi, puc, mobile, stream_youtube, stream_audio)"""
+  type: String!
+
+  """Station video feed URL"""
+  videoUrl: String
+
+  """Weather data from OpenWeather"""
+  weather: WeatherReading
+}
+
+"""The connection type for Station."""
+type StationConnection {
+  """A list of edges."""
+  edges: [StationEdge]
+
+  """A list of nodes."""
+  nodes: [Station]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type StationCount {
+  count: Int!
+  station: Station!
+}
+
+type StationCounts {
+  detections: Int!
+  species: Int!
+}
+
+"""An edge in a connection."""
+type StationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Station
+}
+
+type Subscription {
+  newDetection(
+    speciesIds: [ID!]
+    stationIds: [ID!]
+    stationTypes: [String!]
+    continents: [String!]
+    countries: [String!]
+
+    """Minimum (>) score"""
+    scoreGt: Float
+
+    """Maximum (<) score"""
+    scoreLt: Float
+
+    """Minimum (>=) score"""
+    scoreGte: Float
+
+    """Maximum (<=) score"""
+    scoreLte: Float
+
+    """Minimum (>) confidence"""
+    confidenceGt: Float
+
+    """Maximum (<) confidence"""
+    confidenceLt: Float
+
+    """Minimum (>=) confidence"""
+    confidenceGte: Float
+
+    """Maximum (<=) confidence"""
+    confidenceLte: Float
+
+    """Minimum (>) probability"""
+    probabilityGt: Float
+
+    """Maximum (<) probability"""
+    probabilityLt: Float
+
+    """Minimum (>=) probability"""
+    probabilityGte: Float
+
+    """Maximum (<=) probability"""
+    probabilityLte: Float
+
+    """Minimum (>=) time of day"""
+    timeOfDayGte: Int
+
+    """Maximum (<=) time of day"""
+    timeOfDayLte: Int
+  ): NewDetectionPayload!
+}
+
+type SummarySpeciesCount {
+  count: Int!
+  speciesId: ID!
+}
+
+type SystemReading {
+  batteryVoltage: Float
+  firmware: String
+  powerSource: String
+  sdAvailable: BigInt
+  sdCapacity: BigInt
+
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+  uploadingCompleted: Int
+  uploadingTotal: Int
+}
+
+"""The connection type for SystemReading."""
+type SystemReadingConnection {
+  """A list of edges."""
+  edges: [SystemReadingEdge]
+
+  """A list of nodes."""
+  nodes: [SystemReading]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type SystemReadingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: SystemReading
+}
+
+"""Weather reading provided by OpenWeather"""
+type WeatherReading {
+  """Cloudiness, %"""
+  cloudiness: Int!
+
+  """Geographic coordinates of the reading"""
+  coords: Coordinates!
+
+  """Group of weather parameters (Rain, Snow, Extreme etc.)"""
+  description: String!
+
+  """
+  Temperature, Kelvin. This temperature parameter accounts for the human perception of weather
+  """
+  feelsLike: Float!
+
+  """Atmospheric pressure on the ground level, hPa"""
+  groundLevel: Int
+
+  """Humidity, %"""
+  humidity: Int!
+
+  """
+  Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
+  """
+  pressure: Int!
+
+  """Rain volume for the last 1 hour, mm"""
+  rain1h: Float
+
+  """Rain volume for the last 3 hours, mm"""
+  rain3h: Float
+
+  """Atmospheric pressure on the sea level, hPa"""
+  seaLevel: Int
+
+  """Snow volume for the last 1 hour, mm"""
+  snow1h: Float
+
+  """Snow volume for the last 3 hours, mm"""
+  snow3h: Float
+
+  """Sunrise time"""
+  sunrise: ISO8601DateTime!
+
+  """Sunset time"""
+  sunset: ISO8601DateTime!
+
+  """Temperature, Kelvin"""
+  temp: Float!
+
+  """
+  Maximum temperature at the moment, Kelvin. This is maximal currently observed temperature (within large megalopolises and urban areas)
+  """
+  tempMax: Float!
+
+  """
+  Minimum temperature at the moment, Kelvin. This is minimal currently observed temperature (within large megalopolises and urban areas)
+  """
+  tempMin: Float!
+
+  """Reading timestamp"""
+  timestamp: ISO8601DateTime
+
+  """Visibility, meters"""
+  visibility: Int!
+
+  """Wind direction, degrees (meteorological)"""
+  windDir: Int!
+
+  """Wind gust, meter/sec"""
+  windGust: Float
+
+  """Wind speed, meter/sec"""
+  windSpeed: Float!
+}

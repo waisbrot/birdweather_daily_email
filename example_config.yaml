@@ -1,0 +1,19 @@
+---
+email:
+  recipients:
+    - foo@example.com
+    - bar@example.com
+  sender: "Big Baz" <baz@example.com>
+  smtp:
+    host: smtp.example.com
+    port: 123
+    user: baz@example.com
+    pass: setecastronomy
+stations:
+  - 123
+  - 456
+influx:
+  url: https://example.com
+  token: po24k1p24
+  org: my-org
+  bucket: my-bucket
