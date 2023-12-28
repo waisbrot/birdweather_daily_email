@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"html/template"
 	"io"
+	"path"
 	"time"
 
 	"github.com/spf13/viper"
@@ -23,7 +24,8 @@ type StationTemplate struct {
 
 func readTemplate() *template.Template {
 	templateFile := viper.GetString("email.template")
-	template, err := template.New("countEmail.tmpl").ParseFiles(templateFile)
+	base := path.Base(templateFile)
+	template, err := template.New(base).ParseFiles(templateFile)
 	if err != nil {
 		panic(err)
 	}
