@@ -17,3 +17,18 @@ query dailyCounts($stationId: ID!) {
     }
   }
 }
+
+query hourlyCounts($stationId: ID!, $timePeriod: InputDuration!) {
+  station(id: $stationId) {
+    name
+    topSpecies(limit: 20, period: $timePeriod) {
+      breakdown {
+        almostCertain
+      }
+      species {
+        commonName
+      }
+    }
+  }
+}
+

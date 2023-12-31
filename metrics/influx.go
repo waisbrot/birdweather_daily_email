@@ -14,8 +14,16 @@ var influxClient influxdb.Client
 var writeAPI influxapi.WriteAPIBlocking
 var invokeTime time.Time
 
-func initInflux() {
-	influxdb.DefaultOptions().AddDefaultTag("application", "birdweather_digest")
+func initInflux(args []string) {
+	var command string
+	if len(args) > 0 {
+		command = args[0]
+	} else {
+		command = ""
+	}
+	influxdb.DefaultOptions().
+		AddDefaultTag("application", "birdweather_digest").
+		AddDefaultTag("command", command)
 	influxClient = influxdb.NewClient(viper.GetString("influx.url"), viper.GetString("influx.token"))
 	writeAPI = influxClient.WriteAPIBlocking(viper.GetString("influx.org"), viper.GetString("influx.bucket"))
 	produceMetrics = true
@@ -53,6 +61,15 @@ func recordInfluxEmail(recipientCount int, bodyLength int) {
 	p := influxdb.NewPointWithMeasurement("email").
 		AddField("recipients", recipientCount).
 		AddField("body_length", bodyLength).
+		SetTime(time.Now())
+	writePoint(p)
+}
+
+func recordInfluxBird(stationName string, birdName string, count int) {
+	p := influxdb.NewPointWithMeasurement("bird").
+		AddTag("station", stationName).
+		AddTag("name", birdName).
+		AddField("count", count).
 		SetTime(time.Now())
 	writePoint(p)
 }

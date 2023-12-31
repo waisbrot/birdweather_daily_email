@@ -5,22 +5,10 @@ import (
 	"html/template"
 	"io"
 	"path"
-	"time"
 
 	"github.com/spf13/viper"
-	"github.com/waisbrot/birdweather_daily_email/birdweather"
+	"github.com/waisbrot/birdweather_daily_email/structs"
 )
-
-type EmailTemplate struct {
-	Day      time.Weekday
-	Stations []StationTemplate
-}
-
-type StationTemplate struct {
-	Name   string
-	Id     int
-	Counts []birdweather.BirdCount
-}
 
 func readTemplate() *template.Template {
 	templateFile := viper.GetString("email.template")
@@ -32,7 +20,7 @@ func readTemplate() *template.Template {
 	return template
 }
 
-func RenderTemplate(variables EmailTemplate) io.Reader {
+func RenderTemplate(variables structs.EmailTemplate) io.Reader {
 	template := readTemplate()
 	buffer := new(bytes.Buffer)
 	err := template.Execute(buffer, variables)

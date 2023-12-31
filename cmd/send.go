@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/waisbrot/birdweather_daily_email/birdweather"
 	"github.com/waisbrot/birdweather_daily_email/email"
+	"github.com/waisbrot/birdweather_daily_email/structs"
 )
 
 // sendCmd represents the send command
@@ -24,11 +25,11 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		stations := []email.StationTemplate{}
+		stations := []structs.StationTemplate{}
 		stationIds := viper.GetIntSlice("stations")
 		for _, stationId := range stationIds {
 			stationName, counts := birdweather.BirdsForStation(fmt.Sprint(stationId))
-			templ := email.StationTemplate{}
+			templ := structs.StationTemplate{}
 			templ.Name = stationName
 			templ.Id = stationId
 			templ.Counts = counts
@@ -41,7 +42,7 @@ to quickly create a Cobra application.`,
 		}
 		yesterday := time.Now()
 		yesterday = yesterday.Add(time.Hour * -24)
-		templ := email.EmailTemplate{
+		templ := structs.EmailTemplate{
 			Day:      yesterday.Weekday(),
 			Stations: stations,
 		}

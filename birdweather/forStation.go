@@ -6,26 +6,19 @@ import (
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/waisbrot/birdweather_daily_email/metrics"
+	"github.com/waisbrot/birdweather_daily_email/structs"
 )
 
-type BirdCount struct {
-	Name        string
-	SciName     string
-	ImageURL    string
-	ImageCredit string
-	Count       int
-}
-
-func BirdsForStation(stationid string) (string, []BirdCount) {
+func BirdsForStation(stationid string) (string, []structs.BirdCount) {
 	client := graphql.NewClient("https://app.birdweather.com/graphql", http.DefaultClient)
 	counts, err := dailyCounts(context.Background(), client, stationid)
 	if err != nil {
 		panic(err)
 	}
 
-	var result = []BirdCount{}
+	var result = []structs.BirdCount{}
 	for _, count := range counts.Station.TopSpecies {
-		var bc BirdCount
+		var bc structs.BirdCount
 		bc.Name = count.Species.CommonName
 		bc.SciName = count.Species.ScientificName
 		bc.ImageURL = count.Species.ImageUrl
@@ -36,4 +29,19 @@ func BirdsForStation(stationid string) (string, []BirdCount) {
 	}
 	metrics.RecordFetch(counts.Station.Name, len(result))
 	return counts.Station.Name, result
+}
+
+func RecordCountsForStationPastMinutes(stationId string, minutes int) {
+	client := graphql.NewClient("https://app.birdweather.com/graphql", http.DefaultClient)
+	duration := InputDuration{
+		Count: minutes,
+		Unit:  "minute",
+	}
+	counts, err := hourlyCounts(context.Background(), client, stationId, duration)
+	if err != nil {
+		panic(err)
+	}
+	for _, count := range counts.Station.TopSpecies {
+		metrics.RecordBird(counts.Station.Name, count.Species.CommonName, count.Breakdown.AlmostCertain)
+	}
 }

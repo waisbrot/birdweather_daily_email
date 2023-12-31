@@ -23,7 +23,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error reading config file `%s`: %v\n", configFile, err)
 		os.Exit(1)
 	}
-	metrics.Init()
+	metrics.Init(os.Args[1:])
 	metrics.RecordInvoked()
 	cmd.Execute()
 	metrics.Finish()

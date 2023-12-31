@@ -4,9 +4,34 @@ package birdweather
 
 import (
 	"context"
+	"time"
 
 	"github.com/Khan/genqlient/graphql"
 )
+
+// A time period (e.g. last 24 hours) or explicit date duration.
+type InputDuration struct {
+	// Number of units of time
+	Count int `json:"count"`
+	// Unit of time (hour/day/week/month/year)
+	Unit string `json:"unit"`
+	// From date
+	From time.Time `json:"from"`
+	// To date
+	To time.Time `json:"to"`
+}
+
+// GetCount returns InputDuration.Count, and is useful for accessing the field via an interface.
+func (v *InputDuration) GetCount() int { return v.Count }
+
+// GetUnit returns InputDuration.Unit, and is useful for accessing the field via an interface.
+func (v *InputDuration) GetUnit() string { return v.Unit }
+
+// GetFrom returns InputDuration.From, and is useful for accessing the field via an interface.
+func (v *InputDuration) GetFrom() time.Time { return v.From }
+
+// GetTo returns InputDuration.To, and is useful for accessing the field via an interface.
+func (v *InputDuration) GetTo() time.Time { return v.To }
 
 // __dailyCountsInput is used internally by genqlient
 type __dailyCountsInput struct {
@@ -15,6 +40,18 @@ type __dailyCountsInput struct {
 
 // GetStationId returns __dailyCountsInput.StationId, and is useful for accessing the field via an interface.
 func (v *__dailyCountsInput) GetStationId() string { return v.StationId }
+
+// __hourlyCountsInput is used internally by genqlient
+type __hourlyCountsInput struct {
+	StationId  string        `json:"stationId"`
+	TimePeriod InputDuration `json:"timePeriod"`
+}
+
+// GetStationId returns __hourlyCountsInput.StationId, and is useful for accessing the field via an interface.
+func (v *__hourlyCountsInput) GetStationId() string { return v.StationId }
+
+// GetTimePeriod returns __hourlyCountsInput.TimePeriod, and is useful for accessing the field via an interface.
+func (v *__hourlyCountsInput) GetTimePeriod() InputDuration { return v.TimePeriod }
 
 // dailyCountsResponse is returned by dailyCounts on success.
 type dailyCountsResponse struct {
@@ -112,6 +149,70 @@ func (v *dailyCountsStationTopSpeciesSpeciesCountSpecies) GetImageCredit() strin
 // GetImageUrl returns dailyCountsStationTopSpeciesSpeciesCountSpecies.ImageUrl, and is useful for accessing the field via an interface.
 func (v *dailyCountsStationTopSpeciesSpeciesCountSpecies) GetImageUrl() string { return v.ImageUrl }
 
+// hourlyCountsResponse is returned by hourlyCounts on success.
+type hourlyCountsResponse struct {
+	Station hourlyCountsStation `json:"station"`
+}
+
+// GetStation returns hourlyCountsResponse.Station, and is useful for accessing the field via an interface.
+func (v *hourlyCountsResponse) GetStation() hourlyCountsStation { return v.Station }
+
+// hourlyCountsStation includes the requested fields of the GraphQL type Station.
+// The GraphQL type's documentation follows.
+//
+// A BirdWeather station (either real or virtual).
+type hourlyCountsStation struct {
+	// Station name
+	Name       string                                      `json:"name"`
+	TopSpecies []hourlyCountsStationTopSpeciesSpeciesCount `json:"topSpecies"`
+}
+
+// GetName returns hourlyCountsStation.Name, and is useful for accessing the field via an interface.
+func (v *hourlyCountsStation) GetName() string { return v.Name }
+
+// GetTopSpecies returns hourlyCountsStation.TopSpecies, and is useful for accessing the field via an interface.
+func (v *hourlyCountsStation) GetTopSpecies() []hourlyCountsStationTopSpeciesSpeciesCount {
+	return v.TopSpecies
+}
+
+// hourlyCountsStationTopSpeciesSpeciesCount includes the requested fields of the GraphQL type SpeciesCount.
+type hourlyCountsStationTopSpeciesSpeciesCount struct {
+	Breakdown hourlyCountsStationTopSpeciesSpeciesCountBreakdown `json:"breakdown"`
+	Species   hourlyCountsStationTopSpeciesSpeciesCountSpecies   `json:"species"`
+}
+
+// GetBreakdown returns hourlyCountsStationTopSpeciesSpeciesCount.Breakdown, and is useful for accessing the field via an interface.
+func (v *hourlyCountsStationTopSpeciesSpeciesCount) GetBreakdown() hourlyCountsStationTopSpeciesSpeciesCountBreakdown {
+	return v.Breakdown
+}
+
+// GetSpecies returns hourlyCountsStationTopSpeciesSpeciesCount.Species, and is useful for accessing the field via an interface.
+func (v *hourlyCountsStationTopSpeciesSpeciesCount) GetSpecies() hourlyCountsStationTopSpeciesSpeciesCountSpecies {
+	return v.Species
+}
+
+// hourlyCountsStationTopSpeciesSpeciesCountBreakdown includes the requested fields of the GraphQL type SpeciesCountBreakdown.
+type hourlyCountsStationTopSpeciesSpeciesCountBreakdown struct {
+	// Count of almost certain detections
+	AlmostCertain int `json:"almostCertain"`
+}
+
+// GetAlmostCertain returns hourlyCountsStationTopSpeciesSpeciesCountBreakdown.AlmostCertain, and is useful for accessing the field via an interface.
+func (v *hourlyCountsStationTopSpeciesSpeciesCountBreakdown) GetAlmostCertain() int {
+	return v.AlmostCertain
+}
+
+// hourlyCountsStationTopSpeciesSpeciesCountSpecies includes the requested fields of the GraphQL type Species.
+type hourlyCountsStationTopSpeciesSpeciesCountSpecies struct {
+	// Common name
+	CommonName string `json:"commonName"`
+}
+
+// GetCommonName returns hourlyCountsStationTopSpeciesSpeciesCountSpecies.CommonName, and is useful for accessing the field via an interface.
+func (v *hourlyCountsStationTopSpeciesSpeciesCountSpecies) GetCommonName() string {
+	return v.CommonName
+}
+
 // The query or mutation executed by dailyCounts.
 const dailyCounts_Operation = `
 query dailyCounts ($stationId: ID!) {
@@ -150,6 +251,51 @@ func dailyCounts(
 	var err error
 
 	var data dailyCountsResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by hourlyCounts.
+const hourlyCounts_Operation = `
+query hourlyCounts ($stationId: ID!, $timePeriod: InputDuration!) {
+	station(id: $stationId) {
+		name
+		topSpecies(limit: 20, period: $timePeriod) {
+			breakdown {
+				almostCertain
+			}
+			species {
+				commonName
+			}
+		}
+	}
+}
+`
+
+func hourlyCounts(
+	ctx context.Context,
+	client graphql.Client,
+	stationId string,
+	timePeriod InputDuration,
+) (*hourlyCountsResponse, error) {
+	req := &graphql.Request{
+		OpName: "hourlyCounts",
+		Query:  hourlyCounts_Operation,
+		Variables: &__hourlyCountsInput{
+			StationId:  stationId,
+			TimePeriod: timePeriod,
+		},
+	}
+	var err error
+
+	var data hourlyCountsResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

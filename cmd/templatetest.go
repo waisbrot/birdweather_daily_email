@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/waisbrot/birdweather_daily_email/birdweather"
 	"github.com/waisbrot/birdweather_daily_email/email"
+	"github.com/waisbrot/birdweather_daily_email/structs"
 )
 
 // templatetestCmd represents the templatetest command
@@ -25,13 +25,13 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("templatetest called")
-		templ := email.EmailTemplate{
+		templ := structs.EmailTemplate{
 			Day: time.Sunday,
-			Stations: []email.StationTemplate{
+			Stations: []structs.StationTemplate{
 				{
 					Name: "Example station",
 					Id:   42,
-					Counts: []birdweather.BirdCount{
+					Counts: []structs.BirdCount{
 						{
 							Name:        "Chickadee",
 							SciName:     "Dee-dee-dee",

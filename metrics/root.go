@@ -9,9 +9,9 @@ import (
 
 var produceMetrics bool = false
 
-func Init() {
+func Init(args []string) {
 	if viper.IsSet("influx.url") {
-		initInflux()
+		initInflux(args)
 	} else {
 		fmt.Fprintf(os.Stderr, "No influx.url defined. Skipping metrics production.")
 	}
@@ -38,5 +38,11 @@ func RecordInvoked() {
 func RecordEmail(recipientCount int, bodyLength int) {
 	if produceMetrics {
 		recordInfluxEmail(recipientCount, bodyLength)
+	}
+}
+
+func RecordBird(stationName string, birdName string, count int) {
+	if produceMetrics {
+		recordInfluxBird(stationName, birdName, count)
 	}
 }

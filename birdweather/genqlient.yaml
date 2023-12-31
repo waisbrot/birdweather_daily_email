@@ -5,3 +5,7 @@ operations:
 - genqlient.graphql
 generated: generated.go
 package: birdweather
+
+bindings:
+  ISO8601Date:
+    type: time.Time
