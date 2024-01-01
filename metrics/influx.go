@@ -2,6 +2,7 @@ package metrics
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	influxdb "github.com/influxdata/influxdb-client-go/v2"
@@ -21,11 +22,18 @@ func initInflux(args []string) {
 	} else {
 		command = ""
 	}
-	influxdb.DefaultOptions().
-		AddDefaultTag("application", "birdweather_digest").
-		AddDefaultTag("command", command)
-	influxClient = influxdb.NewClient(viper.GetString("influx.url"), viper.GetString("influx.token"))
+	influxClient = influxdb.NewClientWithOptions(
+		viper.GetString("influx.url"), 
+		viper.GetString("influx.token"),
+		&influxdb.Options{
+			writeOptions: &write.Options{
+				defaultTags: map[string]string{
+					"command": command,
+				}
+			}
+		})
 	writeAPI = influxClient.WriteAPIBlocking(viper.GetString("influx.org"), viper.GetString("influx.bucket"))
+
 	produceMetrics = true
 }
 
@@ -43,6 +51,7 @@ func writePoint(p *write.Point) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Wrote data-point %#v\n", p)
 }
 
 func recordInfluxFetch(station string, speciesCount int) {
