@@ -2,6 +2,7 @@ package birdweather
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/Khan/genqlient/graphql"
@@ -41,7 +42,9 @@ func RecordCountsForStationPastMinutes(stationId string, minutes int) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Got %d species for station %s\n", len(counts.Station.TopSpecies), stationId)
 	for _, count := range counts.Station.TopSpecies {
 		metrics.RecordBird(counts.Station.Name, count.Species.CommonName, count.Breakdown.AlmostCertain)
+		fmt.Printf("Recorded %d of %s\n", count.Breakdown.AlmostCertain, count.Species.CommonName)
 	}
 }
