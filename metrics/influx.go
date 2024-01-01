@@ -22,16 +22,13 @@ func initInflux(args []string) {
 	} else {
 		command = ""
 	}
+	options := &influxdb.Options{}
+	options.SetApplicationName("birdweather")
+	options.AddDefaultTag("command", command)
 	influxClient = influxdb.NewClientWithOptions(
-		viper.GetString("influx.url"), 
+		viper.GetString("influx.url"),
 		viper.GetString("influx.token"),
-		&influxdb.Options{
-			writeOptions: &write.Options{
-				defaultTags: map[string]string{
-					"command": command,
-				}
-			}
-		})
+		options)
 	writeAPI = influxClient.WriteAPIBlocking(viper.GetString("influx.org"), viper.GetString("influx.bucket"))
 
 	produceMetrics = true
