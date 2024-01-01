@@ -20,7 +20,7 @@ var hourlyMetricsCmd = &cobra.Command{
 		stationIds := viper.GetIntSlice("stations")
 		for _, stationId := range stationIds {
 			fmt.Printf("Recording counts for station %d\n", stationId)
-			birdweather.RecordCountsForStationPastMinutes(fmt.Sprint(stationId), 30)
+			birdweather.RecordCountsForStationPastMinutes(fmt.Sprint(stationId), 1)
 		}
 	},
 }

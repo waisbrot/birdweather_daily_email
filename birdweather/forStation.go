@@ -32,11 +32,11 @@ func BirdsForStation(stationid string) (string, []structs.BirdCount) {
 	return counts.Station.Name, result
 }
 
-func RecordCountsForStationPastMinutes(stationId string, minutes int) {
+func RecordCountsForStationPastMinutes(stationId string, hours int) {
 	client := graphql.NewClient("https://app.birdweather.com/graphql", http.DefaultClient)
 	duration := InputDuration{
-		Count: minutes,
-		Unit:  "minute",
+		Count: hours,
+		Unit:  "hour",
 	}
 	counts, err := hourlyCounts(context.Background(), client, stationId, duration)
 	if err != nil {
