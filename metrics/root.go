@@ -46,3 +46,9 @@ func RecordBird(stationName string, birdName string, count int) {
 		recordInfluxBird(stationName, birdName, count)
 	}
 }
+
+func RecordSpecies(stationName string, count int) {
+	if produceMetrics {
+		recordInfluxSpecies(stationName, count)
+	}
+}

@@ -23,8 +23,10 @@ func initInflux(args []string) {
 		command = ""
 	}
 	options := &influxdb.Options{}
-	options.SetApplicationName("birdweather")
-	options.AddDefaultTag("command", command)
+	options.
+		SetApplicationName("birdweather").
+		AddDefaultTag("command", command).
+		AddDefaultTag("application", "birdweather")
 	influxClient = influxdb.NewClientWithOptions(
 		viper.GetString("influx.url"),
 		viper.GetString("influx.token"),
@@ -37,13 +39,13 @@ func initInflux(args []string) {
 func finishInflux() {
 	duration := time.Since(invokeTime)
 	p := influxdb.NewPointWithMeasurement("execution").
-		AddField("latency", duration.Milliseconds()).
-		SetTime(time.Now())
+		AddField("latency", duration.Milliseconds())
 	writePoint(p)
 	influxClient.Close()
 }
 
 func writePoint(p *write.Point) {
+	p.SetTime(time.Now())
 	err := writeAPI.WritePoint(context.Background(), p)
 	if err != nil {
 		panic(err)
@@ -54,8 +56,7 @@ func writePoint(p *write.Point) {
 func recordInfluxFetch(station string, speciesCount int) {
 	p := influxdb.NewPointWithMeasurement("fetch").
 		AddTag("station", station).
-		AddField("species", speciesCount).
-		SetTime(time.Now())
+		AddField("species", speciesCount)
 	writePoint(p)
 }
 
@@ -66,8 +67,7 @@ func recordInfluxInvoked() {
 func recordInfluxEmail(recipientCount int, bodyLength int) {
 	p := influxdb.NewPointWithMeasurement("email").
 		AddField("recipients", recipientCount).
-		AddField("body_length", bodyLength).
-		SetTime(time.Now())
+		AddField("body_length", bodyLength)
 	writePoint(p)
 }
 
@@ -75,7 +75,13 @@ func recordInfluxBird(stationName string, birdName string, count int) {
 	p := influxdb.NewPointWithMeasurement("bird").
 		AddTag("station", stationName).
 		AddTag("name", birdName).
-		AddField("count", count).
-		SetTime(time.Now())
+		AddField("count", count)
+	writePoint(p)
+}
+
+func recordInfluxSpecies(stationName string, count int) {
+	p := influxdb.NewPointWithMeasurement("species").
+		AddTag("station", stationName).
+		AddField("count", count)
 	writePoint(p)
 }

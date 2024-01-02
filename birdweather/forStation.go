@@ -32,7 +32,7 @@ func BirdsForStation(stationid string) (string, []structs.BirdCount) {
 	return counts.Station.Name, result
 }
 
-func RecordCountsForStationPastMinutes(stationId string, hours int) {
+func RecordCountsForStationPastHours(stationId string, hours int) {
 	client := graphql.NewClient("https://app.birdweather.com/graphql", http.DefaultClient)
 	duration := InputDuration{
 		Count: hours,
@@ -43,6 +43,7 @@ func RecordCountsForStationPastMinutes(stationId string, hours int) {
 		panic(err)
 	}
 	fmt.Printf("Got %d species for station %s\n", len(counts.Station.TopSpecies), stationId)
+	metrics.RecordSpecies(counts.Station.Name, len(counts.Station.TopSpecies))
 	for _, count := range counts.Station.TopSpecies {
 		metrics.RecordBird(counts.Station.Name, count.Species.CommonName, count.Breakdown.AlmostCertain)
 		fmt.Printf("Recorded %d of %s\n", count.Breakdown.AlmostCertain, count.Species.CommonName)
