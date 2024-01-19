@@ -22,3 +22,4 @@ go.work
 /email_password
 /birdweather_daily_email
 /waisbrot_config.yaml
+/.vscode
