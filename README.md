@@ -1,8 +1,12 @@
 # birdweather_daily_email
 
+I got a brace of [BirdWeather](https://app.birdweather.com) PUCs for myself and family members. Rather than checking stations regularly, I thought it'd be nice to get a daily digest email of what birds appeared:
+
 ![example email](/img/birds-email-1.png "Example email sent by the program")
 
-A personal project for sending a daily summary of the birds whose calls were identified by my stations on [BirdWeather](https://app.birdweather.com). And also learning some basic Go.
+The email goes out to all the family bird-listeners summarizing what birds were active yesterday at the different stations. I can see my parents home in the mountains trail behind my sea-level place in winter bird activity, due to colder temperatures.
+
+This project also serves as a vehicle for teaching myself programming in Go. That's the reason for the language selection.
 
 ## Usage
 
